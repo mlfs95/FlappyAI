@@ -9,8 +9,8 @@
 import Foundation
 
 class GenerationController {
-    private let AMOUNT_OF_BIRDS = 50
-    private let MUTATION_VARIATION: Float = 0.08
+    private let AMOUNT_OF_BIRDS = 75
+    private let MUTATION_VARIATION: Float = 0.1
     private var birdsAlive: Int
     var birds = [AIBird]()
     var currentGeneration: Int
@@ -20,7 +20,7 @@ class GenerationController {
         birdsAlive = AMOUNT_OF_BIRDS
         currentGeneration = 1
         for i in 0..<AMOUNT_OF_BIRDS {
-            birds.append(AIBird(numberOfInputs: 5, index: i))
+            birds.append(AIBird(numberOfInputs: 4, index: i))
         }
     }
     
@@ -44,7 +44,7 @@ class GenerationController {
     
     private func createNewMutatedBirdsBasedOnBestBird(bestBird: AIBird) {
         for i in 0..<AMOUNT_OF_BIRDS {
-            birds.append(AIBird(numberOfInputs: 5, index: i))
+            birds.append(AIBird(numberOfInputs: 4, index: i))
             birds[i].copyBrain(bird: bestBird)
             if i != 0 {
                 birds[i].mutateBirdWith(maxVariation: MUTATION_VARIATION)
@@ -55,8 +55,7 @@ class GenerationController {
     func makeBirdsThink(closestUpperPipePosition: Float, closestBottomPipePosition: Float, distanceToClosestPipe: Float) {
         birds.forEach { bird in
             let birdHeight = Float(bird.frame.midY)
-            let birdYVelocity = Float((bird.physicsBody?.velocity.dy)!)
-            bird.thinksOfJumping(inputs: [birdHeight, birdYVelocity, closestUpperPipePosition, closestBottomPipePosition, distanceToClosestPipe])
+            bird.thinksOfJumping(inputs: [birdHeight, closestUpperPipePosition, closestBottomPipePosition, distanceToClosestPipe])
         }
     }
     

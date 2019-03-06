@@ -10,7 +10,7 @@ import Foundation
 import SpriteKit
 
 class Pipes {
-    private let SPACE_BETWEEN_PIPES = 80
+    private let SPACE_BETWEEN_PIPES = 90
     private let MINIMUM_PIPE_HEIGHT = 150
     static let CATEGORY_BIT_MASK: UInt32 = 0x1
     let startingXPosition: Int
