@@ -7,12 +7,13 @@
 //
 
 import Foundation
+import SpriteKit
 
 class PlayerGameController: GameController, GameSceneDelegate {
     private var bird = Bird()
     
-    override init(view: GameViewController) {
-        super.init(view: view)
+    override init(view: GameViewController, gameScene: GameScene, textureAltas: SKTextureAtlas) {
+        super.init(view: view, gameScene: gameScene, textureAltas: textureAltas)
         gameScene.gameSceneDelegate = self
     }
     
@@ -21,25 +22,14 @@ class PlayerGameController: GameController, GameSceneDelegate {
     }
     
     override internal func startNewGame() {
-        score = 0
         bird = Bird()
         gameScene.addChild(bird)
         super.startNewGame()
-    }
-    
-    internal func didPassByPipe() {
-        score += 1
-        for pipes in listOfPipes {
-            if let scoreNode = pipes.scoreNode {
-                gameScene.removeChildren(in: [scoreNode])
-                pipes.scoreNode = nil
-                return
-            }
-        }
+        score = 0
     }
     
     internal func birdDiedWith(index: Int) {
-        pipeCreationTimer?.invalidate()
+        gameScene.removeAllActions()
         gameScene.removeAllChildren()
         startNewGame()
     }

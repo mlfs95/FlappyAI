@@ -21,6 +21,7 @@ enum CategoryBitMask: UInt32 {
 enum GameMode {
     case AI_MODE
     case PLAYER_MODE
+    case VERSUS_MODE
 }
 
 class BaseSKLabel: SKLabelNode {

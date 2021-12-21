@@ -20,4 +20,10 @@ class MenuViewController: UIViewController {
         gameViewController.gameMode = GameMode.AI_MODE
         self.present(gameViewController, animated: true)
     }
+    
+    @IBAction func versusModeTouched(_ sender: Any) {
+        let gameViewController = GameViewController()
+        gameViewController.gameMode = GameMode.VERSUS_MODE
+        self.present(gameViewController, animated: true)
+    }
 }

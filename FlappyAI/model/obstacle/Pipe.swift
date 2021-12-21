@@ -12,21 +12,17 @@ import SpriteKit
  class Pipe: SKSpriteNode{
     static let PIPE_HEIGHT = 650
     static let PIPE_WIDTH = 61
-    let imageNamed: String
     var xPosition: Int
     var yPosition: Int
     
-    init(xPosition: Int, yPosition: Int, imageNamed: String){
+    init(xPosition: Int, yPosition: Int, imageTexture: SKTexture){
         self.xPosition = xPosition
         self.yPosition = yPosition
-        self.imageNamed = imageNamed
         
-        let imageTexture = SKTexture(imageNamed: imageNamed)
-        super.init(texture: imageTexture, color: UIColor.clear, size: imageTexture.size())
+        super.init(texture: imageTexture, color: UIColor.clear, size: CGSize(width: Pipe.PIPE_WIDTH, height: Pipe.PIPE_HEIGHT))
         
         self.name = "Pipe"
         self.position = CGPoint(x: self.xPosition, y: self.yPosition)
-        self.size = CGSize(width: Pipe.PIPE_WIDTH, height: Pipe.PIPE_HEIGHT)
         
         self.physicsBody = SKPhysicsBody(texture: imageTexture, size: self.size)
         self.physicsBody!.isDynamic = true
@@ -39,24 +35,6 @@ import SpriteKit
         self.physicsBody!.linearDamping = 0
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-class UpperPipe: Pipe {
-    init(xPosition: Int, yPosition: Int) {
-        super.init(xPosition: xPosition, yPosition: yPosition, imageNamed: "upper-pipe")
-    }
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-class BottomPipe: Pipe {
-    init(xPosition: Int, yPosition: Int) {
-        super.init(xPosition: xPosition, yPosition: yPosition, imageNamed: "bottom-pipe")
-    }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

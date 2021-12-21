@@ -11,8 +11,10 @@ import SpriteKit
 
 class Ground: Border {
     
-    init() {
-        super.init(color: .green, yPosition: 0)
+    init(groundTexture: SKTexture, screenWidth: CGFloat) {
+        let height = 6.74 * screenWidth/30.73
+        let size = CGSize(width: screenWidth, height: height)
+        super.init(texture: groundTexture, xPosition: Int(screenWidth)/2, yPosition: Int(height)/4, size: size, screenWidth: screenWidth)
     }
     
     required init?(coder aDecoder: NSCoder) {

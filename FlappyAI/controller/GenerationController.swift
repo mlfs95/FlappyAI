@@ -52,10 +52,9 @@ class GenerationController {
         }
     }
     
-    func makeBirdsThink(closestUpperPipePosition: Float, closestBottomPipePosition: Float, distanceToClosestPipe: Float) {
+    func makeBirdsThink(nextObstacle: Obstacle) {
         birds.forEach { bird in
-            let birdHeight = Float(bird.frame.midY)
-            bird.thinksOfJumping(inputs: [birdHeight, closestUpperPipePosition, closestBottomPipePosition, distanceToClosestPipe])
+            bird.thinksOfJumping(nextObstacle: nextObstacle)
         }
     }
     

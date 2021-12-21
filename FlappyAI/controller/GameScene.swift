@@ -8,7 +8,7 @@
 
 import Foundation
 import SpriteKit
-import CoreML
+
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     var gameSceneDelegate: GameSceneDelegate?
@@ -45,8 +45,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             return
         }
         
-        if  (contact.bodyA.node?.name == "Bird" && contact.bodyB.node?.name == "Score Node") ||
-            (contact.bodyA.node?.name == "Score Node" && contact.bodyB.node?.name == "Bird") {
+        if  (contact.bodyA.node?.name?.starts(with: "Bird") ?? false && contact.bodyB.node?.name == "Score Node") ||
+            (contact.bodyA.node?.name == "Score Node" && contact.bodyB.node?.name?.starts(with: "Bird") ?? false) {
             self.gameSceneDelegate?.didPassByPipe()
         }
     }

@@ -17,11 +17,20 @@ class Border: SKSpriteNode {
     
     init(color: UIColor, yPosition: Int) {
         self.yPosition = yPosition
-        
         super.init(texture: nil, color: color, size: CGSize(width: Border.BORDER_WIDTH, height: Border.BORDER_HEIGTH))
-        
+        setupSprite()
+    }
+    
+    init(texture: SKTexture, xPosition: Int, yPosition: Int, size: CGSize, screenWidth: CGFloat) {
+        self.xPosition = xPosition
+        self.yPosition = yPosition
+        super.init(texture: texture, color:  UIColor.clear, size: size)
+        setupSprite()
+    }
+    
+    private func setupSprite() {
         self.name = "Border"
-        self.position = CGPoint(x: self.xPosition, y: self.yPosition)
+        self.position = CGPoint(x: Int(self.xPosition), y: self.yPosition)
         
         self.zPosition = 2
         self.physicsBody = SKPhysicsBody(rectangleOf: self.size)

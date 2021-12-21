@@ -11,24 +11,19 @@ import SpriteKit
 
 class AIGameController: GameController, GameSceneDelegate, GenerationControllerDelegate {
     private var generationLabel: BaseSKLabel
-    private var highScoreLabel: BaseSKLabel
-    private var highScore = 0 {
-        didSet {
-            highScoreLabel.text = "Best: \(highScore)"
-        }
-    }
     private var generationController = GenerationController()
     private var scoreTimer: Timer!
     private var thinkingTimer: Timer!
+    private var hiddenScore: Int
     
-    override init(view: GameViewController) {
+    override init(view: GameViewController, gameScene: GameScene, textureAltas: SKTextureAtlas) {
         generationLabel = BaseSKLabel()
         generationLabel.text = "Generation - 1"
+        generationLabel.fontColor = .black
+        generationLabel.fontName = "Copperplate"
         generationLabel.fontSize = 15
-        highScoreLabel = BaseSKLabel()
-        highScoreLabel.text = "Best: 0"
-        highScoreLabel.fontSize = 15
-        super.init(view: view)
+        hiddenScore = 0
+        super.init(view: view, gameScene: gameScene, textureAltas: textureAltas)
         gameScene.gameSceneDelegate = self
         generationController.delegate = self
         startNewGeneration()
@@ -37,14 +32,9 @@ class AIGameController: GameController, GameSceneDelegate, GenerationControllerD
     private func startNewGeneration() {
         generationLabel.text = "Generation - \(generationController.currentGeneration)"
         gameScene.addChild(generationLabel)
-        generationLabel.position = CGPoint(x: generationLabel.width()/2 + 20, y: gameViewController.view.frame.maxY - 50)
-        gameScene.addChild(highScoreLabel)
-        highScoreLabel.position = CGPoint(x: gameViewController.view.frame.maxX - highScoreLabel.width()/2 - 20 , y: gameViewController.view.frame.maxY - 50)
-
-        if highScore < score {
-            highScore = score
-        }
+        generationLabel.position = CGPoint(x: gameScene.view!.frame.maxX - generationLabel.width()/2 - 20 , y: gameScene.view!.frame.maxY - 100)
         score = 0
+        hiddenScore = 0
         var birdCount = 0
         generationController.birds.forEach { bird in
             gameScene.addChild(bird)
@@ -56,30 +46,28 @@ class AIGameController: GameController, GameSceneDelegate, GenerationControllerD
     
     func startScoreTimer() {
         scoreTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { _ in
-            self.score += 1
+            self.hiddenScore += 1
         })
         scoreTimer.fire()
     }
     
     private func startBirdThinkingTimer() {
         thinkingTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { _ in
-            self.startBirdsThoughts()
+            self.makeBirdsThink()
         })
         thinkingTimer.fire()
     }
     
-    private func startBirdsThoughts() {
-        let closestPipe = getClosestPipes()
-        let upperPipePosition = Float(closestPipe.upperPipe.frame.minY)
-        let bottomPipePosition = Float(closestPipe.bottomPipe.frame.maxY)
-        let distanceToClosestPipe = Float(closestPipe.xPosition - Bird.BIRD_X_POSITION - Bird.BIRD_WIDTH/2)
-        generationController.makeBirdsThink(closestUpperPipePosition: upperPipePosition, closestBottomPipePosition: bottomPipePosition, distanceToClosestPipe: distanceToClosestPipe)
+    private func makeBirdsThink() {
+        if let closestObstacle = getClosestObstacle() {
+            generationController.makeBirdsThink(nextObstacle: closestObstacle)
+        }
     }
     
-    private func getClosestPipes() -> Pipes {
-        var closest = listOfPipes.first
+    private func getClosestObstacle() -> Obstacle? {
+        var closest = listOfObstacles.first
         var closestDistance = Int.max
-        for pipe in listOfPipes {
+        for pipe in listOfObstacles {
             if pipe.xPosition > Bird.BIRD_X_POSITION - Bird.BIRD_WIDTH/2 {
                 let currentPipeDistance = pipe.xPosition - Bird.BIRD_X_POSITION
                 if closestDistance > currentPipeDistance {
@@ -88,18 +76,18 @@ class AIGameController: GameController, GameSceneDelegate, GenerationControllerD
                 }
             }
         }
-        return closest!
+        return closest
     }
     
     internal func birdDiedWith(index: Int) {
-        if let bird = generationController.birdDiedWithIndexAndScore(index: index, score: score) {
+        if let bird = generationController.birdDiedWithIndexAndScore(index: index, score: hiddenScore) {
             gameScene.removeChildren(in: [bird])
         }
     }
     
     internal func resetGeneration() {
         scoreTimer.invalidate()
-        pipeCreationTimer?.invalidate()
+        gameScene.removeAllActions()
         gameScene.removeAllChildren()
         startNewGame()
         startNewGeneration()

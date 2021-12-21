@@ -12,7 +12,7 @@ import SpriteKit
 class Ceiling: Border {
     
     init(screenSize: CGSize) {
-        super.init(color: .blue, yPosition: Int(screenSize.height))
+        super.init(color: .blue, yPosition: Int(screenSize.height) + 40)
     }
     
     required init?(coder aDecoder: NSCoder) {

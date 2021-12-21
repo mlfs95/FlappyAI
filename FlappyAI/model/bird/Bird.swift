@@ -22,6 +22,7 @@ class Bird: SKSpriteNode {
         
         self.name = "Bird"
         self.position = CGPoint(x: Bird.BIRD_X_POSITION, y: yPosition)
+        self.zPosition = 2
         self.size = CGSize(width: Bird.BIRD_WIDTH, height: Bird.BIRD_HEIGHT)
         
         self.physicsBody = SKPhysicsBody(texture: imageTexture, size: self.size)

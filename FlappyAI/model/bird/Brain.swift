@@ -19,6 +19,11 @@ class Brain {
         }
     }
     
+    init(weights: [Float]) {
+        self.numberOfInputs = weights.count
+        self.weights = weights
+    }
+    
     func think(inputs: [Float]) -> Bool {
         var sum: Float = 0
         for i in 0..<numberOfInputs {

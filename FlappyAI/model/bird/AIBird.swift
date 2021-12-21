@@ -23,8 +23,20 @@ class AIBird: Bird {
         self.alpha = 0.3
     }
     
-    func thinksOfJumping(inputs: [Float]) {
-        if self.brain.think(inputs: inputs) {
+    init(weights: [Float], index: Int) {
+        brain = Brain(weights: weights)
+        self.index = index
+        super.init()
+        self.name = "Bird\(index)"
+        self.alpha = 0.3
+    }
+    
+    func thinksOfJumping(nextObstacle: Obstacle) {
+        let upperPipePosition = Float(nextObstacle.upperPipe.frame.minY)
+        let bottomPipePosition = Float(nextObstacle.bottomPipe.frame.maxY)
+        let distanceToClosestPipe = Float(nextObstacle.xPosition - Bird.BIRD_X_POSITION - Bird.BIRD_WIDTH/2)
+        let birdHeight = Float(self.frame.midY)
+        if self.brain.think(inputs: [birdHeight, upperPipePosition, bottomPipePosition, distanceToClosestPipe]) {
             self.jump()
         }
     }
