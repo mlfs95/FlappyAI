@@ -10,11 +10,11 @@ import Foundation
 import SpriteKit
 
 class VersusGameController: PlayerGameController {
-    private var aiBird = AIBird(numberOfInputs: 4, index: 1)
+    private var aiBird = AIBird(numberOfInputs: 3, index: 1)
     private var thinkingTimer: Timer?
     
     override internal func startNewGame() {
-        aiBird = AIBird(weights: [-0.80146164, 0.27981612, 0.53299767, -0.25000766], index: 1)
+        aiBird = AIBird(weights: [-0.7231472, 0.266823, 0.44513], index: 1)
         gameScene.addChild(aiBird)
         super.startNewGame()
         startBirdThinkingTimer()

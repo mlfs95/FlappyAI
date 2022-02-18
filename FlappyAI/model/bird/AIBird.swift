@@ -34,9 +34,8 @@ class AIBird: Bird {
     func thinksOfJumping(nextObstacle: Obstacle) {
         let upperPipePosition = Float(nextObstacle.upperPipe.frame.minY)
         let bottomPipePosition = Float(nextObstacle.bottomPipe.frame.maxY)
-        let distanceToClosestPipe = Float(nextObstacle.xPosition - Bird.BIRD_X_POSITION - Bird.BIRD_WIDTH/2)
         let birdHeight = Float(self.frame.midY)
-        if self.brain.think(inputs: [birdHeight, upperPipePosition, bottomPipePosition, distanceToClosestPipe]) {
+        if self.brain.think(inputs: [birdHeight, upperPipePosition, bottomPipePosition]) {
             self.jump()
         }
     }
